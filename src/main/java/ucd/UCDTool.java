@@ -1,6 +1,7 @@
 /* (c) https://github.com/MontiCore/monticore */
 package ucd;
 
+import com.google.common.base.Preconditions;
 import de.monticore.io.FileReaderWriter;
 import de.monticore.io.paths.MCPath;
 import de.se_rwth.commons.logging.Log;
@@ -9,6 +10,15 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.FilenameUtils;
 import ucd._ast.ASTUCDArtifact;
+import ucd._cocos.ExtendRefUCExists;
+import ucd._cocos.IncludeRefUCExists;
+import ucd._cocos.SpecializedActorExists;
+import ucd._cocos.SpecializesRefUCExists;
+import ucd._cocos.UC2ActorExists;
+import ucd._cocos.UCDCoCoChecker;
+import ucd._cocos.UCPreconditionIsBoolean;
+import ucd._cocos.UniqueActorName;
+import ucd._cocos.UniqueUCName;
 import ucd._symboltable.IUCDArtifactScope;
 import ucd._symboltable.IUCDGlobalScope;
 import ucd._symboltable.UCDArtifactScope;
@@ -159,6 +169,23 @@ public class UCDTool extends UCDToolTOP {
    */
   public Set<Scenario> semDiff(ASTUCDArtifact from, ASTUCDArtifact to) {
     return SemUCDDiff.diff(from, to);
+  }
+
+  @Override
+  public void runAdditionalCoCos (ASTUCDArtifact ast) {
+    Preconditions.checkNotNull(ast);
+
+    UCDCoCoChecker checker = new UCDCoCoChecker();
+    //checker.addCoCo(new UC2ActorExists());
+    checker.addCoCo(new UniqueUCName());
+    checker.addCoCo(new UniqueActorName());
+    //checker.addCoCo(new ExtendRefUCExists());
+    //checker.addCoCo(new IncludeRefUCExists());
+    //checker.addCoCo(new SpecializesRefUCExists());
+    //checker.addCoCo(new SpecializedActorExists());
+    //checker.addCoCo(new UCPreconditionIsBoolean());
+
+    checker.checkAll(ast);
   }
 
 }
