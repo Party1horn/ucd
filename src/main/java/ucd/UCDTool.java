@@ -10,11 +10,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.FilenameUtils;
 import ucd._ast.ASTUCDArtifact;
+import ucd._cocos.ActorCapitalization;
 import ucd._cocos.ExtendRefUCExists;
 import ucd._cocos.IncludeRefUCExists;
 import ucd._cocos.SpecializedActorExists;
 import ucd._cocos.SpecializesRefUCExists;
 import ucd._cocos.UC2ActorExists;
+import ucd._cocos.UCCapitalization;
 import ucd._cocos.UCDCoCoChecker;
 import ucd._cocos.UCPreconditionIsBoolean;
 import ucd._cocos.UniqueActorName;
@@ -184,6 +186,8 @@ public class UCDTool extends UCDToolTOP {
     //checker.addCoCo(new SpecializesRefUCExists());
     //checker.addCoCo(new SpecializedActorExists());
     //checker.addCoCo(new UCPreconditionIsBoolean());
+    checker.addCoCo(new ActorCapitalization());
+    checker.addCoCo(new UCCapitalization());
 
     checker.checkAll(ast);
   }
